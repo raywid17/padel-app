@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Padel Master: Belajar Padel</title>
+    <style>
+        :root { --padel-green: #c1f01a; --dark-blue: #1a2a3a; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: #f4f4f4; }
+        
+        header { background: var(--dark-blue); color: white; padding: 20px; text-align: center; }
+        .hero { background: var(--padel-green); padding: 40px; text-align: center; color: #1a2a3a; }
+
+        .container { max-width: 800px; margin: 20px auto; padding: 20px; }
+        
+        .lesson-card { 
+            background: white; padding: 20px; margin-bottom: 20px; 
+            border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-left: 8px solid var(--padel-green);
+        }
+
+        .visual-box {
+            width: 100%; height: 200px; background: #ddd; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            margin: 15px 0; font-weight: bold; color: #666;
+            transition: 0.3s;
+        }
+
+        .active-visual { background: var(--padel-green) !important; color: black !important; }
+
+        .btn {
+            background: var(--dark-blue); color: white; border: none;
+            padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px;
+        }
+        
+        .btn:hover { background: #2c3e50; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>PADEL MASTER ACADEMY 🎾</h1>
+    </header>
+
+    <section class="hero">
+        <h2>Siap Jadi Pro di Lapangan Kaca?</h2>
+        <p>Belajar teknik dasar Padel dalam 5 menit.</p>
+    </section>
+
+    <div class="container">
+        <div class="lesson-card">
+            <h3>1. Teknik Servis (Underhand)</h3>
+            <p>Berbeda dengan Tenis, servis Padel dilakukan dari bawah pinggang. Bola harus dipantulkan dulu ke lantai sebelum dipukul.</p>
+            <div id="visual-serve" class="visual-box">Visual: Animasi Servis Bawah</div>
+            <button class="btn" onclick="showVisual('serve')">Lihat Gerakan</button>
+        </div>
+
+        <div class="lesson-card">
+            <h3>2. Aturan Dinding Kaca</h3>
+            <p>Dinding adalah teman Anda! Bola boleh memantul ke dinding kaca setelah memantul satu kali di lantai lawan.</p>
+            <div id="visual-wall" class="visual-box">Visual: Alur Pantulan Dinding</div>
+            <button class="btn" onclick="showVisual('wall')">Lihat Alur Bola</button>
+        </div>
+
+        <div class="lesson-card" style="background: #1a2a3a; color: white;">
+            <h3>Quick Quiz!</h3>
+            <p>Berapa kali bola boleh memantul di lantai sebelum harus dipukul?</p>
+            <button class="btn" style="background: #2ecc71;" onclick="checkAnswer(1)">1 Kali</button>
+            <button class="btn" style="background: #e74c3c;" onclick="checkAnswer(2)">2 Kali</button>
+            <p id="quiz-result"></p>
+        </div>
+    </div>
+
+    <script>
+        function showVisual(type) {
+            // Reset visual
+            document.querySelectorAll('.visual-box').forEach(v => {
+                v.classList.remove('active-visual');
+                v.innerText = "Klik tombol untuk melihat visual";
+            });
+
+            if (type === 'serve') {
+                const box = document.getElementById('visual-serve');
+                box.classList.add('active-visual');
+                box.innerText = "🎾 ➔ 🏓 Pantulkan bola, pukul diagonal!";
+            } else if (type === 'wall') {
+                const box = document.getElementById('visual-wall');
+                box.classList.add('active-visual');
+                box.innerText = "Lantai ➔ Dinding Kaca ➔ Pukul!";
+            }
+        }
+
+        function checkAnswer(choice) {
+            const result = document.getElementById('quiz-result');
+            if (choice === 1) {
+                result.innerText = "Benar! ✅ Padel hanya mengizinkan 1 kali pantulan lantai.";
+                result.style.color = "#2ecc71";
+            } else {
+                result.innerText = "Salah! ❌ Jika 2 kali pantul, poin untuk lawan.";
+                result.style.color = "#ff7675";
+            }
+        }
+    </script>
+</body>
+</html>
