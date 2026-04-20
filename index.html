@@ -1,105 +1,691 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Padel Master: Belajar Padel</title>
-    <style>
-        :root { --padel-green: #c1f01a; --dark-blue: #1a2a3a; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: #f4f4f4; }
-        
-        header { background: var(--dark-blue); color: white; padding: 20px; text-align: center; }
-        .hero { background: var(--padel-green); padding: 40px; text-align: center; color: #1a2a3a; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Padel Master Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        .container { max-width: 800px; margin: 20px auto; padding: 20px; }
-        
-        .lesson-card { 
-            background: white; padding: 20px; margin-bottom: 20px; 
-            border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            border-left: 8px solid var(--padel-green);
-        }
+    :root {
+      --green: #c1f01a;
+      --dark: #0d1b2a;
+      --navy: #111e2c;
+      --border: #1e3448;
+      --muted: #6b8aa0;
+      --text: #f0f0f0;
+      --soft: #a8c4d8;
+    }
 
-        .visual-box {
-            width: 100%; height: 200px; background: #ddd; border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
-            margin: 15px 0; font-weight: bold; color: #666;
-            transition: 0.3s;
-        }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--dark);
+      color: var(--text);
+      min-height: 100vh;
+    }
 
-        .active-visual { background: var(--padel-green) !important; color: black !important; }
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, #0d1b2a 0%, #1a3a2a 100%);
+      padding: 3rem 1.5rem 2.5rem;
+      text-align: center;
+      border-bottom: 3px solid var(--green);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 360px; height: 360px;
+      border-radius: 50%;
+      background: rgba(193,240,26,0.04);
+      top: -120px; right: -100px;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: var(--green);
+      color: var(--dark);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      padding: 4px 16px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .hero h1 {
+      font-family: 'Bebas Neue', cursive;
+      font-size: clamp(3rem, 10vw, 5rem);
+      letter-spacing: 5px;
+      color: #fff;
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+    .hero h1 span { color: var(--green); }
+    .hero p { color: var(--muted); font-size: 15px; max-width: 420px; margin: 0 auto; }
+    .progress-bar-wrap {
+      background: rgba(255,255,255,0.1);
+      border-radius: 20px; height: 6px;
+      margin: 1.8rem auto 0; max-width: 340px; overflow: hidden;
+    }
+    .progress-bar-fill {
+      background: var(--green); height: 100%; border-radius: 20px;
+      transition: width 0.6s ease; width: 0%;
+    }
+    .progress-label { font-size: 12px; color: var(--muted); margin-top: 7px; }
 
-        .btn {
-            background: var(--dark-blue); color: white; border: none;
-            padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px;
-        }
-        
-        .btn:hover { background: #2c3e50; }
-    </style>
+    /* NAV TABS */
+    .nav-tabs {
+      display: flex;
+      background: var(--navy);
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto; scrollbar-width: none;
+      position: sticky; top: 0; z-index: 10;
+    }
+    .nav-tabs::-webkit-scrollbar { display: none; }
+    .tab-btn {
+      flex: 1; min-width: 90px;
+      padding: 15px 10px;
+      background: none; border: none;
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px; font-weight: 500;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s; white-space: nowrap;
+    }
+    .tab-btn.active { color: var(--green); border-bottom-color: var(--green); }
+    .tab-btn:hover:not(.active) { color: var(--text); }
+
+    /* SECTIONS */
+    .section { display: none; padding: 1.5rem; max-width: 860px; margin: 0 auto; }
+    .section.active { display: block; }
+    .section-title {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 2rem; letter-spacing: 3px;
+      color: var(--green); margin-bottom: 1.4rem;
+    }
+
+    /* LESSON CARDS */
+    .lesson-card {
+      background: var(--navy);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .lesson-card:hover { border-color: var(--green); transform: translateY(-1px); }
+    .lesson-header {
+      display: flex; align-items: center;
+      padding: 1rem 1.2rem; gap: 14px;
+    }
+    .lesson-num {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: var(--green); color: var(--dark);
+      font-weight: 700; font-size: 17px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: all 0.3s;
+    }
+    .lesson-num.done { background: #2a8a4a; color: white; font-size: 20px; }
+    .lesson-info { flex: 1; }
+    .lesson-title { font-weight: 600; font-size: 15px; color: var(--text); margin-bottom: 3px; }
+    .lesson-sub { font-size: 12px; color: var(--muted); }
+    .lesson-arrow { color: var(--muted); font-size: 20px; transition: transform 0.2s, color 0.2s; }
+    .lesson-card.open .lesson-arrow { transform: rotate(90deg); color: var(--green); }
+    .lesson-body {
+      display: none; padding: 0 1.2rem 1.2rem;
+      border-top: 1px solid var(--border);
+      animation: fadeIn 0.3s ease;
+    }
+    .lesson-body.open { display: block; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(-8px); } to { opacity:1; transform:translateY(0); } }
+    .lesson-body p { color: var(--soft); font-size: 14px; line-height: 1.75; padding-top: 1rem; }
+
+    /* ANIMATION BOX */
+    .anim-box {
+      background: var(--dark);
+      border: 1px solid var(--border);
+      border-radius: 10px; height: 140px;
+      margin: 1rem 0; position: relative;
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .anim-court { width: 100%; height: 100%; position: relative; }
+    .anim-ball {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--green); position: absolute;
+      box-shadow: 0 0 14px rgba(193,240,26,0.6);
+    }
+    .anim-wall {
+      position: absolute; right: 10px; top: 0; bottom: 0;
+      width: 6px; background: rgba(193,240,26,0.3); border-radius: 3px;
+    }
+    .anim-net {
+      position: absolute; left: 50%; top: 0; bottom: 0; width: 3px;
+      background: repeating-linear-gradient(to bottom, var(--soft) 0 4px, transparent 4px 8px);
+      transform: translateX(-50%);
+    }
+    .anim-label {
+      position: absolute; bottom: 8px; left: 50%;
+      transform: translateX(-50%);
+      font-size: 11px; color: var(--muted); white-space: nowrap;
+    }
+    .anim-player { position: absolute; left: 14px; width: 28px; height: 44px; top: 50%; transform: translateY(-50%); }
+    .player-head { width: 18px; height: 18px; border-radius: 50%; background: #4a90d9; margin: 0 auto 2px; }
+    .player-body { width: 22px; height: 22px; background: #4a90d9; border-radius: 4px; margin: 0 auto; }
+
+    @keyframes serve-anim {
+      0%   { left: 40px; top: 100px; opacity: 1; }
+      30%  { left: 40px; top: 55px; }
+      65%  { left: 55%; top: 70px; }
+      100% { left: 55%; top: 25px; opacity: 0.3; }
+    }
+    @keyframes wall-anim {
+      0%   { left: 40px; top: 65px; }
+      35%  { left: 70%; top: 85px; }
+      55%  { left: 76%; top: 35px; }
+      80%  { left: 50%; top: 55px; }
+      100% { left: 30px; top: 55px; }
+    }
+    @keyframes volley-anim {
+      0%   { left: 60%; top: 60px; }
+      40%  { left: 65px;  top: 50px; }
+      70%  { left: 70px;  top: 55px; }
+      100% { left: 60%; top: 60px; }
+    }
+    @keyframes lob-anim {
+      0%   { left: 50px; top: 100px; }
+      50%  { left: 50%;  top: 10px; }
+      100% { left: 82%;  top: 85px; }
+    }
+    .playing-serve  { animation: serve-anim  2s ease-in-out infinite; }
+    .playing-wall   { animation: wall-anim   2.2s ease-in-out infinite; }
+    .playing-volley { animation: volley-anim 2s ease-in-out infinite; }
+    .playing-lob    { animation: lob-anim    2.2s ease-in-out infinite; }
+
+    /* TIP GRID */
+    .tip-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px,1fr));
+      gap: 10px; margin-top: 0.8rem;
+    }
+    .tip-card {
+      background: var(--dark);
+      border: 1px solid var(--border);
+      border-radius: 10px; padding: 14px;
+      font-size: 13px; color: var(--soft);
+    }
+    .tip-card strong { display: block; color: var(--green); font-size: 14px; margin-bottom: 4px; }
+
+    /* QUIZ */
+    .quiz-wrap {
+      background: var(--dark);
+      border: 1.5px solid var(--green);
+      border-radius: 14px; padding: 1.5rem;
+    }
+    .score-bar { display: flex; align-items: center; gap: 14px; margin-bottom: 1.5rem; }
+    .score-num { font-family: 'Bebas Neue', cursive; font-size: 3rem; color: var(--green); line-height: 1; }
+    .score-label { font-size: 13px; color: var(--muted); }
+    .quiz-q { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 1rem; }
+    .quiz-opts { display: flex; flex-direction: column; gap: 10px; }
+    .quiz-opt {
+      background: var(--navy);
+      border: 1.5px solid var(--border);
+      border-radius: 10px; padding: 13px 16px;
+      color: var(--soft); font-size: 14px;
+      cursor: pointer; transition: all 0.2s; text-align: left;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .quiz-opt:hover { border-color: var(--green); color: var(--text); }
+    .quiz-opt.correct { border-color: #2ecc71; background: rgba(46,204,113,0.1); color: #2ecc71; }
+    .quiz-opt.wrong   { border-color: #e74c3c; background: rgba(231,76,60,0.1);  color: #e74c3c; }
+    .quiz-result {
+      margin-top: 1rem; padding: 10px 14px;
+      border-radius: 8px; font-size: 14px; font-weight: 500; display: none;
+    }
+    .quiz-result.show { display: block; }
+    .quiz-result.ok   { background: rgba(46,204,113,0.12); color: #2ecc71; }
+    .quiz-result.fail { background: rgba(231,76,60,0.12);  color: #e74c3c; }
+    .quiz-next {
+      margin-top: 12px;
+      background: var(--green); color: var(--dark);
+      border: none; border-radius: 8px;
+      padding: 11px 22px; font-weight: 700; font-size: 14px;
+      cursor: pointer; display: none; font-family: 'DM Sans', sans-serif;
+    }
+    .quiz-next.show { display: inline-block; }
+
+    /* VIDEO */
+    .video-card {
+      background: var(--navy);
+      border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden;
+      margin-bottom: 1rem; transition: border-color 0.2s;
+    }
+    .video-card:hover { border-color: var(--green); }
+    .video-thumb {
+      width: 100%; height: 170px;
+      background: var(--dark);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; cursor: pointer;
+    }
+    .court-bg {
+      position: absolute; inset: 0; opacity: 0.12;
+      background:
+        repeating-linear-gradient(90deg, var(--green) 0 2px, transparent 2px 80px),
+        repeating-linear-gradient(0deg,  var(--green) 0 2px, transparent 2px 80px);
+    }
+    .play-btn {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: rgba(193,240,26,0.92);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; z-index: 1;
+      transition: transform 0.2s;
+    }
+    .play-btn:hover { transform: scale(1.1); }
+    .play-icon {
+      width: 0; height: 0;
+      border-top: 11px solid transparent;
+      border-bottom: 11px solid transparent;
+      border-left: 20px solid var(--dark);
+      margin-left: 5px;
+    }
+    .video-info { padding: 1rem 1.2rem; }
+    .video-title { font-weight: 600; font-size: 15px; color: var(--text); margin-bottom: 4px; }
+    .video-meta { font-size: 12px; color: var(--muted); }
+    .video-link {
+      display: inline-block; margin-top: 10px;
+      background: rgba(193,240,26,0.12); color: var(--green);
+      font-size: 13px; font-weight: 600;
+      padding: 7px 16px; border-radius: 20px;
+      text-decoration: none; transition: background 0.2s; cursor: pointer;
+    }
+    .video-link:hover { background: rgba(193,240,26,0.22); }
+
+    /* GLOSARIUM */
+    .gloss-list { list-style: none; }
+    .gloss-list li {
+      padding: 13px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex; gap: 14px; align-items: baseline;
+    }
+    .gloss-term { color: var(--green); font-weight: 600; min-width: 130px; font-size: 14px; }
+    .gloss-def { color: var(--soft); font-size: 14px; line-height: 1.6; }
+
+    /* ATURAN */
+    .rule-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 10px; margin-bottom: 1rem; }
+
+    /* RESPONSIVE */
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 3.2rem; }
+      .tip-grid { grid-template-columns: 1fr 1fr; }
+      .gloss-term { min-width: 100px; }
+    }
+  </style>
 </head>
 <body>
 
-    <header>
-        <h1>PADEL MASTER ACADEMY 🎾</h1>
-    </header>
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">Akademi Padel</div>
+    <h1>PADEL<br><span>MASTER</span></h1>
+    <p>Kuasai lapangan kaca dalam 5 pelajaran interaktif</p>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="prog-fill"></div>
+    </div>
+    <div class="progress-label" id="prog-label">0 / 5 pelajaran selesai</div>
+  </div>
 
-    <section class="hero">
-        <h2>Siap Jadi Pro di Lapangan Kaca?</h2>
-        <p>Belajar teknik dasar Padel dalam 5 menit.</p>
-    </section>
+  <!-- NAV -->
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="switchTab('teknik', this)">Teknik</button>
+    <button class="tab-btn" onclick="switchTab('aturan', this)">Aturan</button>
+    <button class="tab-btn" onclick="switchTab('latihan', this)">Quiz</button>
+    <button class="tab-btn" onclick="switchTab('video', this)">Video</button>
+    <button class="tab-btn" onclick="switchTab('glosarium', this)">Glosarium</button>
+  </div>
 
-    <div class="container">
-        <div class="lesson-card">
-            <h3>1. Teknik Servis (Underhand)</h3>
-            <p>Berbeda dengan Tenis, servis Padel dilakukan dari bawah pinggang. Bola harus dipantulkan dulu ke lantai sebelum dipukul.</p>
-            <div id="visual-serve" class="visual-box">Visual: Animasi Servis Bawah</div>
-            <button class="btn" onclick="showVisual('serve')">Lihat Gerakan</button>
+  <!-- TEKNIK -->
+  <div id="tab-teknik" class="section active">
+    <div class="section-title">Teknik Dasar</div>
+
+    <div class="lesson-card" onclick="toggleLesson(this,'serve',0)">
+      <div class="lesson-header">
+        <div class="lesson-num" id="num-0">1</div>
+        <div class="lesson-info">
+          <div class="lesson-title">Servis Underhand</div>
+          <div class="lesson-sub">Teknik paling dasar</div>
         </div>
-
-        <div class="lesson-card">
-            <h3>2. Aturan Dinding Kaca</h3>
-            <p>Dinding adalah teman Anda! Bola boleh memantul ke dinding kaca setelah memantul satu kali di lantai lawan.</p>
-            <div id="visual-wall" class="visual-box">Visual: Alur Pantulan Dinding</div>
-            <button class="btn" onclick="showVisual('wall')">Lihat Alur Bola</button>
+        <div class="lesson-arrow">›</div>
+      </div>
+      <div class="lesson-body" id="body-serve">
+        <p>Servis Padel wajib dilakukan dari bawah pinggang. Bola dipantulkan dulu ke lantai sebelum dipukul secara diagonal ke kotak servis lawan. Ini membedakan Padel dari tenis standar dan membuat servis lebih mudah dikontrol.</p>
+        <div class="anim-box">
+          <div class="anim-court">
+            <div class="anim-player"><div class="player-head"></div><div class="player-body"></div></div>
+            <div class="anim-net"></div>
+            <div class="anim-ball playing-serve"></div>
+            <div class="anim-label">Pantul → Diagonal ke kotak servis lawan</div>
+          </div>
         </div>
-
-        <div class="lesson-card" style="background: #1a2a3a; color: white;">
-            <h3>Quick Quiz!</h3>
-            <p>Berapa kali bola boleh memantul di lantai sebelum harus dipukul?</p>
-            <button class="btn" style="background: #2ecc71;" onclick="checkAnswer(1)">1 Kali</button>
-            <button class="btn" style="background: #e74c3c;" onclick="checkAnswer(2)">2 Kali</button>
-            <p id="quiz-result"></p>
+        <div class="tip-grid">
+          <div class="tip-card"><strong>Posisi</strong>Berdiri di belakang garis servis</div>
+          <div class="tip-card"><strong>Arah</strong>Pukul diagonal ke kotak lawan</div>
+          <div class="tip-card"><strong>Dinding</strong>Bola boleh sentuh dinding setelah masuk</div>
         </div>
+      </div>
     </div>
 
-    <script>
-        function showVisual(type) {
-            // Reset visual
-            document.querySelectorAll('.visual-box').forEach(v => {
-                v.classList.remove('active-visual');
-                v.innerText = "Klik tombol untuk melihat visual";
-            });
+    <div class="lesson-card" onclick="toggleLesson(this,'wall',1)">
+      <div class="lesson-header">
+        <div class="lesson-num" id="num-1">2</div>
+        <div class="lesson-info">
+          <div class="lesson-title">Teknik Dinding (Rebote)</div>
+          <div class="lesson-sub">Senjata utama pemain pro</div>
+        </div>
+        <div class="lesson-arrow">›</div>
+      </div>
+      <div class="lesson-body" id="body-wall">
+        <p>Inilah yang membuat Padel unik! Setelah bola memantul di lantai, ia boleh mengenai dinding kaca dan tetap dalam permainan. Teknik "rebote" adalah memanfaatkan pantulan dinding untuk mengembalikan bola dengan efektif.</p>
+        <div class="anim-box">
+          <div class="anim-court">
+            <div class="anim-wall"></div>
+            <div class="anim-ball playing-wall"></div>
+            <div class="anim-label">Lantai → Dinding Kaca → Kembali ke permainan</div>
+          </div>
+        </div>
+        <div class="tip-grid">
+          <div class="tip-card"><strong>Timing</strong>Baca arah pantulan dari kaca</div>
+          <div class="tip-card"><strong>Posisi</strong>Mundur saat bola menuju dinding</div>
+          <div class="tip-card"><strong>Power</strong>Kurangi power, tambah kontrol</div>
+        </div>
+      </div>
+    </div>
 
-            if (type === 'serve') {
-                const box = document.getElementById('visual-serve');
-                box.classList.add('active-visual');
-                box.innerText = "🎾 ➔ 🏓 Pantulkan bola, pukul diagonal!";
-            } else if (type === 'wall') {
-                const box = document.getElementById('visual-wall');
-                box.classList.add('active-visual');
-                box.innerText = "Lantai ➔ Dinding Kaca ➔ Pukul!";
-            }
-        }
+    <div class="lesson-card" onclick="toggleLesson(this,'volley',2)">
+      <div class="lesson-header">
+        <div class="lesson-num" id="num-2">3</div>
+        <div class="lesson-info">
+          <div class="lesson-title">Volley & Smash</div>
+          <div class="lesson-sub">Serang dari net</div>
+        </div>
+        <div class="lesson-arrow">›</div>
+      </div>
+      <div class="lesson-body" id="body-volley">
+        <p>Volley dilakukan sebelum bola menyentuh lantai, biasanya di dekat net. Smash adalah pukulan keras dari atas kepala yang bertujuan mengakhiri rally. Keduanya membutuhkan posisi yang tepat di area net dan timing yang presisi.</p>
+        <div class="anim-box">
+          <div class="anim-court">
+            <div class="anim-net"></div>
+            <div class="anim-ball playing-volley"></div>
+            <div class="anim-label">Intersep bola sebelum menyentuh lantai</div>
+          </div>
+        </div>
+        <div class="tip-grid">
+          <div class="tip-card"><strong>Posisi</strong>Dekat net, kaki sedikit ditekuk</div>
+          <div class="tip-card"><strong>Grip</strong>Pegang raket dengan mantap</div>
+          <div class="tip-card"><strong>Smash</strong>Arahkan ke sudut atau dinding</div>
+        </div>
+      </div>
+    </div>
 
-        function checkAnswer(choice) {
-            const result = document.getElementById('quiz-result');
-            if (choice === 1) {
-                result.innerText = "Benar! ✅ Padel hanya mengizinkan 1 kali pantulan lantai.";
-                result.style.color = "#2ecc71";
-            } else {
-                result.innerText = "Salah! ❌ Jika 2 kali pantul, poin untuk lawan.";
-                result.style.color = "#ff7675";
-            }
+    <div class="lesson-card" onclick="toggleLesson(this,'lob',3)">
+      <div class="lesson-header">
+        <div class="lesson-num" id="num-3">4</div>
+        <div class="lesson-info">
+          <div class="lesson-title">Lob Defensif</div>
+          <div class="lesson-sub">Bertahan dengan cerdas</div>
+        </div>
+        <div class="lesson-arrow">›</div>
+      </div>
+      <div class="lesson-body" id="body-lob">
+        <p>Lob adalah pukulan melambung tinggi yang memaksa lawan mundur dari net. Ini adalah teknik defensif terbaik ketika Anda berada dalam tekanan dan perlu membeli waktu untuk kembali ke posisi yang lebih baik.</p>
+        <div class="anim-box">
+          <div class="anim-court">
+            <div class="anim-net"></div>
+            <div class="anim-ball playing-lob"></div>
+            <div class="anim-label">Lob tinggi → paksa lawan mundur dari net</div>
+          </div>
+        </div>
+        <div class="tip-grid">
+          <div class="tip-card"><strong>Tinggi</strong>Minimal 3–4 meter dari lantai</div>
+          <div class="tip-card"><strong>Arah</strong>Ke sudut belakang lawan</div>
+          <div class="tip-card"><strong>Setelah</strong>Langsung maju ke posisi net</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson-card" onclick="toggleLesson(this,'bandeja',4)">
+      <div class="lesson-header">
+        <div class="lesson-num" id="num-4">5</div>
+        <div class="lesson-info">
+          <div class="lesson-title">Bandeja & Vibora</div>
+          <div class="lesson-sub">Teknik lanjutan level pro</div>
+        </div>
+        <div class="lesson-arrow">›</div>
+      </div>
+      <div class="lesson-body" id="body-bandeja">
+        <p><strong style="color:var(--green)">Bandeja</strong> adalah smash yang dikontrol dengan topspin, menjaga posisi di net sambil mengarahkan bola ke dinding belakang. <strong style="color:var(--green)">Vibora</strong> adalah versi yang lebih agresif dengan side-spin yang membuat bola meluncur tajam ke samping setelah memantul.</p>
+        <div class="tip-grid">
+          <div class="tip-card"><strong>Bandeja</strong>Spin ke bawah, tujuan dinding belakang</div>
+          <div class="tip-card"><strong>Vibora</strong>Side-spin, bola berbelok ke samping</div>
+          <div class="tip-card"><strong>Kapan</strong>Saat lob lawan tidak terlalu tinggi</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ATURAN -->
+  <div id="tab-aturan" class="section">
+    <div class="section-title">Aturan Permainan</div>
+    <div class="rule-grid">
+      <div class="tip-card"><strong>Ukuran Lapangan</strong>20m × 10m, tertutup dinding kaca & jaring kawat</div>
+      <div class="tip-card"><strong>Jumlah Pemain</strong>Selalu 2 vs 2 (format doubles)</div>
+      <div class="tip-card"><strong>Sistem Skor</strong>Sama seperti tenis: 15 – 30 – 40 – Game</div>
+      <div class="tip-card"><strong>Set & Match</strong>Best of 3 sets, tiebreak di skor 6-6</div>
+      <div class="tip-card"><strong>Servis</strong>2 kesempatan, wajib dari bawah pinggang</div>
+      <div class="tip-card"><strong>Pantulan</strong>Maksimal 1x di lantai sebelum dipukul</div>
+    </div>
+    <div class="tip-grid" style="grid-template-columns:1fr;">
+      <div class="tip-card"><strong>Aturan Dinding Sah</strong>Bola boleh mengenai dinding kaca SETELAH memantul di lantai. Jika bola langsung ke dinding tanpa menyentuh lantai di area lawan = keluar (out).</div>
+      <div class="tip-card"><strong>Zona Servis</strong>Servis dilakukan dari belakang garis servis, diarahkan secara diagonal. Bola harus masuk ke kotak servis lawan dan boleh melanjutkan ke dinding belakang.</div>
+      <div class="tip-card"><strong>Raket Padel</strong>Tidak ada senar — permukaan padat dengan lubang-lubang kecil. Panjang maksimal 45.5 cm. Material: karbon, fiberglass, atau foam EVA.</div>
+      <div class="tip-card"><strong>Golden Point</strong>Saat deuce (40-40), penerima servis berhak memilih sisi lapangan mana yang ingin mereka pertahankan. Poin ini menentukan pemenang game.</div>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="tab-latihan" class="section">
+    <div class="section-title">Quick Quiz</div>
+    <div class="score-bar">
+      <div class="score-num" id="q-score">0</div>
+      <div>
+        <div style="font-size:15px;color:var(--text);font-weight:500">Poin</div>
+        <div class="score-label" id="q-total">dari 0 soal dijawab</div>
+      </div>
+    </div>
+    <div class="quiz-wrap" id="quiz-box">
+      <div class="quiz-q" id="quiz-question"></div>
+      <div class="quiz-opts" id="quiz-opts"></div>
+      <div class="quiz-result" id="quiz-result"></div>
+      <button class="quiz-next" id="quiz-next" onclick="nextQ()">Soal Berikutnya →</button>
+    </div>
+  </div>
+
+  <!-- VIDEO -->
+  <div id="tab-video" class="section">
+    <div class="section-title">Video Tutorial</div>
+    <p style="color:var(--muted);font-size:14px;margin-bottom:1.2rem">Koleksi referensi video terbaik untuk belajar Padel dari nol hingga level menengah.</p>
+
+    <div class="video-card">
+      <div class="video-thumb" onclick="window.open('https://www.youtube.com/results?search_query=padel+serve+tutorial+beginner','_blank')">
+        <div class="court-bg"></div>
+        <div class="play-btn"><div class="play-icon"></div></div>
+      </div>
+      <div class="video-info">
+        <div class="video-title">Cara Servis yang Benar untuk Pemula</div>
+        <div class="video-meta">Teknik Dasar · Durasi ~8 menit</div>
+        <span class="video-link" onclick="window.open('https://www.youtube.com/results?search_query=padel+serve+tutorial+beginner','_blank')">Cari di YouTube →</span>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <div class="video-thumb" onclick="window.open('https://www.youtube.com/results?search_query=padel+rebote+wall+technique','_blank')">
+        <div class="court-bg"></div>
+        <div class="play-btn"><div class="play-icon"></div></div>
+      </div>
+      <div class="video-info">
+        <div class="video-title">Teknik Rebote: Bermain dari Dinding</div>
+        <div class="video-meta">Teknik Menengah · Durasi ~12 menit</div>
+        <span class="video-link" onclick="window.open('https://www.youtube.com/results?search_query=padel+rebote+wall+technique','_blank')">Cari di YouTube →</span>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <div class="video-thumb" onclick="window.open('https://www.youtube.com/results?search_query=padel+bandeja+vibora+tutorial','_blank')">
+        <div class="court-bg"></div>
+        <div class="play-btn"><div class="play-icon"></div></div>
+      </div>
+      <div class="video-info">
+        <div class="video-title">Smash, Bandeja & Vibora — Level Pro</div>
+        <div class="video-meta">Teknik Lanjutan · Durasi ~15 menit</div>
+        <span class="video-link" onclick="window.open('https://www.youtube.com/results?search_query=padel+bandeja+vibora+tutorial','_blank')">Cari di YouTube →</span>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <div class="video-thumb" onclick="window.open('https://www.youtube.com/results?search_query=padel+doubles+strategy+tactics','_blank')">
+        <div class="court-bg"></div>
+        <div class="play-btn"><div class="play-icon"></div></div>
+      </div>
+      <div class="video-info">
+        <div class="video-title">Strategi Doubles: Menang Bersama Partner</div>
+        <div class="video-meta">Strategi & Taktik · Durasi ~18 menit</div>
+        <span class="video-link" onclick="window.open('https://www.youtube.com/results?search_query=padel+doubles+strategy+tactics','_blank')">Cari di YouTube →</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- GLOSARIUM -->
+  <div id="tab-glosarium" class="section">
+    <div class="section-title">Glosarium Padel</div>
+    <ul class="gloss-list">
+      <li><span class="gloss-term">Rebote</span><span class="gloss-def">Teknik memukul bola setelah memantul dari dinding kaca belakang lapangan</span></li>
+      <li><span class="gloss-term">Bandeja</span><span class="gloss-def">Smash terkontrol dengan topspin yang menjaga posisi net, bola diarahkan ke dinding belakang</span></li>
+      <li><span class="gloss-term">Vibora</span><span class="gloss-def">Smash dengan side-spin agresif, bola berbelok tajam ke samping setelah memantul di dinding</span></li>
+      <li><span class="gloss-term">Lob</span><span class="gloss-def">Pukulan melambung tinggi untuk memaksa lawan mundur dari posisi net</span></li>
+      <li><span class="gloss-term">Bajada</span><span class="gloss-def">Pukulan saat bola turun dari dinding, biasanya dilakukan dengan topspin keras</span></li>
+      <li><span class="gloss-term">Cristal</span><span class="gloss-def">Dinding kaca transparan di bagian belakang dan samping lapangan Padel</span></li>
+      <li><span class="gloss-term">Golden Point</span><span class="gloss-def">Poin penentu saat deuce (40-40); penerima servis memilih sisi mana yang ingin dipertahankan</span></li>
+      <li><span class="gloss-term">Smash x3</span><span class="gloss-def">Smash ke dinding belakang yang memantul tiga kali, membuat bola sangat sulit dikembalikan</span></li>
+      <li><span class="gloss-term">Globo</span><span class="gloss-def">Lob yang sangat tinggi dan jauh ke belakang, versi ekstrem dari pukulan defensif</span></li>
+      <li><span class="gloss-term">Chiquita</span><span class="gloss-def">Pukulan pelan dengan spin rendah di dekat net, biasanya diarahkan silang ke badan lawan</span></li>
+    </ul>
+  </div>
+
+  <script>
+    var done = [];
+    var currentTab = null;
+
+    var qs = [
+      { q: "Berapa kali bola boleh memantul di lantai sebelum harus dipukul?", opts: ["1 kali","2 kali","3 kali","Tidak boleh memantul"], ans: 0, exp: "Betul! Hanya 1 kali pantulan di lantai yang diizinkan sebelum bola harus dipukul." },
+      { q: "Berapa pemain yang ada di lapangan dalam satu pertandingan Padel?", opts: ["2 pemain","4 pemain","6 pemain","3 pemain"], ans: 1, exp: "Tepat! Padel selalu dimainkan dalam format doubles: 2 vs 2." },
+      { q: "Apa yang membuat raket Padel berbeda dari raket tenis?", opts: ["Lebih panjang","Tidak ada senar, permukaannya padat","Berbentuk oval","Lebih ringan dari raket bulu tangkis"], ans: 1, exp: "Benar! Raket Padel tidak memiliki senar — permukaannya padat dengan lubang-lubang kecil." },
+      { q: "Teknik smash terkontrol yang menjaga posisi net disebut?", opts: ["Lob","Vibora","Bandeja","Chiquita"], ans: 2, exp: "Tepat! Bandeja adalah smash terkontrol dengan topspin yang mempertahankan posisi net." },
+      { q: "Apa yang dimaksud 'Golden Point' dalam Padel?", opts: ["Poin pertama dalam set","Poin penentu saat skor 40-40","Poin dari smash keras","Poin bonus dari dinding"], ans: 1, exp: "Benar! Golden Point adalah poin penentu saat deuce (40-40) — penerima memilih sisi lapangan." },
+      { q: "Ukuran lapangan Padel standar adalah?", opts: ["10m × 5m","20m × 10m","24m × 11m","18m × 9m"], ans: 1, exp: "Benar! Lapangan Padel standar berukuran 20m × 10m, tertutup dinding kaca dan jaring kawat." },
+      { q: "Teknik apa yang digunakan untuk memaksa lawan mundur dari net?", opts: ["Smash","Volley","Lob","Servis"], ans: 2, exp: "Tepat! Lob adalah pukulan melambung yang efektif untuk memaksa lawan mundur dari net." }
+    ];
+
+    var qi = 0, score = 0, answered = false;
+
+    function switchTab(id, btn) {
+      document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('active'); });
+      document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+      document.getElementById('tab-' + id).classList.add('active');
+      btn.classList.add('active');
+      if (id === 'latihan') renderQ();
+    }
+
+    function toggleLesson(card, key, idx) {
+      var body = card.querySelector('.lesson-body');
+      var isOpen = body.classList.contains('open');
+      document.querySelectorAll('.lesson-body').forEach(function(b) { b.classList.remove('open'); });
+      document.querySelectorAll('.lesson-card').forEach(function(c) { c.classList.remove('open'); });
+      if (!isOpen) {
+        body.classList.add('open');
+        card.classList.add('open');
+        if (done.indexOf(key) === -1) {
+          done.push(key);
+          var num = document.getElementById('num-' + idx);
+          num.classList.add('done');
+          num.textContent = '✓';
+          updateProgress();
         }
-    </script>
+      }
+    }
+
+    function updateProgress() {
+      var pct = Math.round(done.length / 5 * 100);
+      document.getElementById('prog-fill').style.width = pct + '%';
+      document.getElementById('prog-label').textContent = done.length + ' / 5 pelajaran selesai';
+    }
+
+    function renderQ() {
+      var box = document.getElementById('quiz-box');
+      if (qi >= qs.length) {
+        var pct = Math.round(score / qs.length * 100);
+        box.innerHTML = '<div style="text-align:center;padding:2rem">'
+          + '<div style="font-family:Bebas Neue,cursive;font-size:3.5rem;color:var(--green)">' + score + '/' + qs.length + '</div>'
+          + '<div style="color:var(--soft);margin-top:8px;font-size:15px">Skor akhir kamu: <strong style="color:var(--green)">' + pct + '%</strong></div>'
+          + '<p style="color:var(--muted);font-size:13px;margin-top:8px">' + (pct >= 80 ? 'Luar biasa! Kamu siap ke lapangan! 🎾' : pct >= 60 ? 'Bagus! Pelajari lagi materi dan coba ulang.' : 'Jangan menyerah! Baca ulang materi dan coba lagi.') + '</p>'
+          + '<button onclick="qi=0;score=0;renderQ()" style="margin-top:1.5rem;background:var(--green);color:var(--dark);border:none;border-radius:8px;padding:12px 24px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;font-size:14px">Ulangi Quiz</button>'
+          + '</div>';
+        return;
+      }
+      var q = qs[qi];
+      answered = false;
+      document.getElementById('quiz-question').textContent = (qi + 1) + '. ' + q.q;
+      var opts = document.getElementById('quiz-opts');
+      opts.innerHTML = '';
+      q.opts.forEach(function(o, i) {
+        var btn = document.createElement('button');
+        btn.className = 'quiz-opt';
+        btn.textContent = o;
+        btn.onclick = function() { checkQ(i, btn, q); };
+        opts.appendChild(btn);
+      });
+      var res = document.getElementById('quiz-result');
+      res.className = 'quiz-result'; res.textContent = '';
+      document.getElementById('quiz-next').className = 'quiz-next';
+    }
+
+    function checkQ(i, btn, q) {
+      if (answered) return;
+      answered = true;
+      var opts = document.querySelectorAll('.quiz-opt');
+      opts[q.ans].classList.add('correct');
+      var res = document.getElementById('quiz-result');
+      if (i === q.ans) {
+        score++;
+        res.textContent = '✓ ' + q.exp;
+        res.className = 'quiz-result show ok';
+      } else {
+        btn.classList.add('wrong');
+        res.textContent = '✗ ' + q.exp;
+        res.className = 'quiz-result show fail';
+      }
+      document.getElementById('q-score').textContent = score;
+      document.getElementById('q-total').textContent = 'dari ' + (qi + 1) + ' soal dijawab';
+      document.getElementById('quiz-next').className = 'quiz-next show';
+      opts.forEach(function(o) { o.onclick = null; });
+    }
+
+    function nextQ() { qi++; renderQ(); }
+
+    renderQ();
+  </script>
 </body>
 </html>
